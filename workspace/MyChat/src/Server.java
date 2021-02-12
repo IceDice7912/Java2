@@ -1,40 +1,26 @@
-import java.awt.BorderLayout;
-import java.awt.Button;
-import java.awt.Color;
-import java.awt.Frame;
-import java.awt.Panel;
-import java.awt.TextArea;
-import java.awt.TextField;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 public class Server {
-
-	public static void UI() {
-		TextArea ta=new TextArea();
-		TextField tf=new TextField(40);
-		Frame f=new Frame("서버 채팅창");
-		Panel p=new Panel();
-		Button b = new Button("전송");
-		f.add(ta,BorderLayout.CENTER);
-		f.add(p,BorderLayout.SOUTH);
-		p.add(tf);	
-		p.add(b);
-		p.setBackground(Color.gray);
-		f.setLocation(800, 200);
-		f.setSize(400,500);
-		f.setVisible(true);		
-		f.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				System.exit(0);
-			}
-		});
-	}
-
-	public static void main(String[] args) {
-		Server.UI();
-		System.out.println("서버 채팅창이 열렸습니다.");
+	int un;
+	
+public static void main(String[] args) {
+		System.out.println("서버 가동 완료");
 		
+		try {
+			ServerSocket ss = new ServerSocket(236);
+			Socket s = ss.accept();
+			System.out.println(s.getPort());
+			System.out.println(s.getInetAddress()+"connect ok");
+			
+			DataInputStream in = new DataInputStream(s.getInputStream());
+			String msg = in.readUTF();
+			System.out.println(msg);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
