@@ -13,6 +13,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class UI {
 	TextArea ta;
@@ -20,11 +21,33 @@ public class UI {
 	Server ser = new Server();
 	int port;
 	String msg;
+	String smsg;
 	
 	public void chatMsg() {
-		msg=tf.getText();
-		ta.append("User " + port + " " + msg + "\n");
-		tf.setText("");
+		Socket s;
+		
+		try {
+			s = new Socket("localhost", 236);
+			
+			msg=tf.getText();
+			smsg = "User " + port + " : " + msg + "\n";
+			tf.setText("");
+			
+			DataOutputStream out = new DataOutputStream(s.getOutputStream());
+			out.writeUTF(smsg);
+			
+			DataInputStream in = new DataInputStream(s.getInputStream());
+			String msg = in.readUTF();
+			ta.append(msg);	
+			
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		
 	}
 	
 	
