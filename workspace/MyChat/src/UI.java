@@ -37,8 +37,8 @@ public class UI {
 			out.writeUTF(smsg);
 			
 			DataInputStream in = new DataInputStream(s.getInputStream());
-			String msg = in.readUTF();
-			ta.append(msg);	
+			String msg2 = in.readUTF();
+			ta.append(msg2);	
 			
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -52,9 +52,9 @@ public class UI {
 	
 	
 	public void onCreate() {
-		Frame f=new Frame("채팅창 - 로컬 포트 " + port);
+		Frame f=new Frame("ChatUser " + port);
 		Panel p=new Panel();
-		Button b1=new Button("전송");
+		Button b1=new Button("Send");
 		 tf=new TextField(20);
 		 ta=new TextArea();		
 		 			
@@ -77,12 +77,18 @@ public class UI {
 
 		f.add(ta,BorderLayout.CENTER);
 		f.add(p,BorderLayout.SOUTH);
-		p.add(tf);
-		p.add(b1);	
 		p.setBackground(Color.gray);	
 		f.setBackground(Color.GREEN);
 		f.setLocation(800, 200);
 		f.setSize(400,500);
+		
+		if (port != 0) {
+		p.add(tf);
+		p.add(b1);	
+		} else {
+			;
+		}
+		
 		f.setVisible(true);
 	}
 }

@@ -1,3 +1,4 @@
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
@@ -21,6 +22,10 @@ public class Client03 {
 			while(true) {
 			DataOutputStream out = new DataOutputStream(s.getOutputStream());
 			out.writeUTF(msg);
+			
+			DataInputStream in = new DataInputStream(s.getInputStream());
+			String msg = in.readUTF();
+			ui.ta.append(msg);
 		}
 			
 			
