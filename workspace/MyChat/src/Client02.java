@@ -15,7 +15,12 @@ public class Client02 {
 		
 		try {
 			Socket s = new Socket("localhost", 236);
-			System.out.println("server connected");
+			int port;
+			port = s.getLocalPort();
+			UI ui=new UI();
+			ui.port=port;
+			ui.onCreate();
+			System.out.println("chatroom connect success");
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("Server not open : " + e);
@@ -23,9 +28,5 @@ public class Client02 {
 			System.exit(0);
 		}
 		
-		int un = 2;
-		UI ui=new UI();
-		ui.un=un;
-		ui.onCreate();
 	}
 }

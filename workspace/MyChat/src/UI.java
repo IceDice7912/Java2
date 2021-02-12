@@ -9,23 +9,27 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
 
 public class UI {
 	TextArea ta;
 	TextField tf;
 	Server ser = new Server();
-	int un;
+	int port;
+	String msg;
 	
 	public void chatMsg() {
-		String msg=tf.getText();
-		ta.append(msg+"\n");
+		msg=tf.getText();
+		ta.append("User " + port + " " + msg + "\n");
 		tf.setText("");
 	}
 	
 	
 	public void onCreate() {
-		Frame f=new Frame("유저 " + un + " 채팅창");
+		Frame f=new Frame("채팅창 - 로컬 포트 " + port);
 		Panel p=new Panel();
 		Button b1=new Button("전송");
 		 tf=new TextField(20);
