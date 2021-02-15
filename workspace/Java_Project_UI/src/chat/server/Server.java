@@ -1,58 +1,85 @@
+
 package chat.server;
 
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.io.*;
+import java.net.*;
+import java.util.ArrayList;
+
+import org.omg.Messaging.SyncScopeHelper;
 
 public class Server {
-	public void chatProcess() {
+	ArrayList<DataOutputStream> allClientOutput=new ArrayList<DataOutputStream>();
 	
+	public void broadcast(String msg) {
+		synchronized (allClientOutput) {
+		for(DataOutputStream out:allClientOutput) {			
+			try {
+				out.writeUTF(msg);
+			} catch (IOException e) {				
+				e.printStackTrace();
+			}
+		}
+	}
+}
+	
+	public void chatProcess() {
 		try {
-			ServerSocket ss = new ServerSocket(9999);
-			System.out.println("Server Ready...");
-			Socket s = ss.accept();
-			System.out.println(s.getInetAddress()+" is Joined");
-			
-			DataInputStream in = new DataInputStream(s.getInputStream());
-			ServerThread t = new ServerThread(in);
-			t.start();
-			
-			String msg = in.readUTF();
-			System.out.println(msg);
-			
-			
-			
+			ServerSocket ss=new ServerSocket(9999);//0~65565 1024번까지는 시스템 포트 21:FTP 23:telnet 25:SMTP 80:HTTP
+			System.out.println("server ready...");
+			while(true) {
+				Socket s=ss.accept();
+				System.out.println(s.getInetAddress()+"님 접속");
+				DataInputStream in=new DataInputStream(s.getInputStream());
+				DataOutputStream out=new DataOutputStream(s.getOutputStream());
+				allClientOutput.add(out);
+				ServerThread t=new ServerThread(in,out, s);
+				t.start();
+			}
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-			
 
-public static void main(String[] args) {
+	public static void main(String[] args) {		
 		new Server().chatProcess();
-	}
-	
-	class ServerThread extends Thread{
-		DataInputStream in;
-		public ServerThread(DataInputStream in2) {
-			// TODO Auto-generated constructor stub
-		}
 
-		public void Run() {
-			this.in = in;
-		}
-		
-		@Override
-		public void run(){
-			String msg;
+	}//end main
+	
+	
+    class ServerThread extends Thread{
+    	DataInputStream in;
+    	DataOutputStream out;
+    	Socket s;
+    	
+    	public ServerThread(DataInputStream in, DataOutputStream out, Socket s) {
+    		this.in=in;
+    		this.out=out;
+    		this.s=s;
+    	}
+    	@Override
+    	public void run() {
+    		String msg="";
 			try {
+				while(true) {
 				msg = in.readUTF();
+				broadcast(msg);
+				}
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				try {
+				if(out != null)	{
+					out.close();
+					synchronized (allClientOutput) {
+						allClientOutput.remove(out);
+					}
+					allClientOutput.remove(out);}
+				if(in != null) in.close();
+				if(s != null) s.close();
+			} catch (IOException ex){
+				
 			}
-			System.out.println(msg);
 		}
-	}
+			System.out.println(msg);
+    	}
+    }
 }

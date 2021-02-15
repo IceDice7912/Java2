@@ -3,35 +3,47 @@ package chat.client;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.io.*;
+import java.net.*;
 
 public class ClientUI {
 	TextArea ta;
 	TextField tf;	
 	DataOutputStream out;
+	DataInputStream in;
+	String chatId;
+	
+	class ClientThread extends Thread{
+		@Override
+		public void run() {
+			while(true) {
+				try {
+				
+					ta.append(in.readUTF()+"\n");//채팅 메세지 읽기
+				
+				} catch (IOException e) {				
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	
 	
 	public void chatMsg() {
 		String msg=tf.getText();
 		try {
-			out.writeUTF(msg);
-		} catch (IOException e) {
+			out.writeUTF(chatId+msg);//채팅 메세지 보내기 [은수]안녕?
+		} catch (IOException e) {			
 			e.printStackTrace();
 		}
 		tf.setText("");
 	}
 	
-	
 	public void onCreate() {
 		Frame f=new Frame("나의 채팅");
 		Panel p=new Panel();
-		Button b1=new Button("전송1");
+		Button b1=new Button("채팅");
 		 tf=new TextField(20);
 		 ta=new TextArea();		
 		MenuBar mb=new MenuBar();
@@ -45,6 +57,34 @@ public class ClientUI {
 		mb.add(file_menu);
 		mb.add(edit_menu);
 		f.setMenuBar(mb);
+		
+		save_item.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				FileDialog save=new FileDialog(f, "저장 창", FileDialog.SAVE);
+				save.setVisible(true);
+				
+				FileWriter fw=null;
+				try {
+					fw=new FileWriter(save.getDirectory()+save.getFile());
+					fw.write(ta.getText());
+					
+					
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}finally {
+					 try {
+						 if(fw !=null ) fw.close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}		
+				
+			}
+		});
 		 
 		 
 		open_item.addActionListener(new ActionListener() {
@@ -54,7 +94,6 @@ public class ClientUI {
 				System.out.println("file open?");
 				FileDialog open=new FileDialog(f, "열기 창", FileDialog.LOAD );
 				open.setVisible(true);
-							
 				
 				FileReader fr=null;
 				BufferedReader br=null;
@@ -83,42 +122,7 @@ public class ClientUI {
 				}
 			}
 		});
-		
-		
-		save_item.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent a) {
-				System.out.println("file save?");
-				FileDialog save=new FileDialog(f, "저장 창", FileDialog.SAVE);
-				save.setVisible(true);	
-				
-				FileWriter fw = null;
-				try {
-					fw = new FileWriter(save.getDirectory()+save.getFile());
-					String msg = ta.getText();
-					fw.write(msg);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} finally {
-					if (fw != null) {
-						try {
-							fw.close();
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				}
-
-			}
-		});
-
-				
-				
-				
-				
+		 
 		f.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -131,16 +135,21 @@ public class ClientUI {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				String chatId = tf.getText();
-				ta.setText(chatId+"님 채팅을 시작합니다.\n");
+				// 채팅 서버 연결
+				chatId="["+tf.getText()+"]";//[은수]
+				ta.setText(chatId+"님 채팅을 시작합니다\n");
 				try {
-					Socket s = new Socket("localhost", 9999);
+					Socket s=new Socket("localhost",9999);
+					out=new DataOutputStream(s.getOutputStream());
+					in=new DataInputStream(s.getInputStream());
+					ClientThread t=new ClientThread();
+					t.start();
 					ta.append("연결 ok\n");
-					
+					tf.setText("");
+				
 				} catch (UnknownHostException e1) {
 					e1.printStackTrace();
-				}catch (IOException e1) {
+				} catch (IOException e1) {					
 					e1.printStackTrace();
 				}
 			}
