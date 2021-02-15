@@ -1,4 +1,4 @@
-package client;
+package chat.client;
 
 import java.awt.TextArea;
 import java.awt.TextField;

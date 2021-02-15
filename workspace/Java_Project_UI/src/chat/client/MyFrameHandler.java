@@ -1,4 +1,4 @@
-package client;
+package chat.client;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;

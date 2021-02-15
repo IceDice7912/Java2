@@ -1,21 +1,29 @@
 
-package client;
+package chat.client;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class ClientUI {
 	TextArea ta;
 	TextField tf;	
+	DataOutputStream out;
 	
 	public void chatMsg() {
 		String msg=tf.getText();
-		ta.append(msg+"\n");
+		try {
+			out.writeUTF(msg);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		tf.setText("");
 	}
 	
@@ -125,7 +133,16 @@ public class ClientUI {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				String chatId = tf.getText();
-				ta.setText(chatId+"님 채팅을 시작합니다.");
+				ta.setText(chatId+"님 채팅을 시작합니다.\n");
+				try {
+					Socket s = new Socket("localhost", 9999);
+					ta.append("연결 ok\n");
+					
+				} catch (UnknownHostException e1) {
+					e1.printStackTrace();
+				}catch (IOException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		
