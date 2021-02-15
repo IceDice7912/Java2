@@ -119,7 +119,15 @@ public class ClientUI {
 		});
 		
 					
-		b1.addActionListener(c -> chatMsg());
+		b1.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				String chatId = tf.getText();
+				ta.setText(chatId+"님 채팅을 시작합니다.");
+			}
+		});
 		
 			
 		tf.addActionListener(new ActionListener() {
