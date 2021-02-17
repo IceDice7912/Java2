@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Date;
 
+import javax.swing.JOptionPane;
+
 import common.entity.Member;
 
 public class CafeUi extends Frame{
@@ -60,6 +62,7 @@ public class CafeUi extends Frame{
 	}
 
 	private void eventProcess() {
+		
 		btn_memInsert.addActionListener(new ActionListener() {
 			
 			@Override
@@ -70,6 +73,21 @@ public class CafeUi extends Frame{
 				Date now = new Date();
 				Member m = new Member(memId,memName,now,phone);
 				System.out.println(m);
+				JOptionPane.showMessageDialog(CafeUi.this, "가입되셨습니다.");
+			}
+		});
+		
+		btn_memSelect.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String memId=tf_memId.getText();
+				String memName=tf_memName.getText();
+				String phone=tf_phone.getText();
+				Date now = new Date();
+				Member m = new Member(memId,memName,now,phone);
+				System.out.println(m);
+				JOptionPane.showMessageDialog(CafeUi.this, memId+"님 조회되셨습니다.");
 			}
 		});
 		
