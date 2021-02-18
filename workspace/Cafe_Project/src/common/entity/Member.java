@@ -1,3 +1,4 @@
+
 package common.entity;
 
 import java.util.Date;
@@ -11,28 +12,37 @@ public class Member {
 	
 	
 	
-	
-	public Member(String memId, String name, Date mDate, String phone) {
-		super();
-		this.memId = memId;
-		this.name = name;
-		this.mDate = mDate;
-		this.phone = phone;
-		this.point = point;
-	}
-	
-	
 	public Member() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-
+	public Member(String memId, String name, Date mDate, String phone) {
+		super();
+		setMemId(memId);
+		setName(name);
+		setmDate(mDate);
+		setPhone(phone);		
+	}
+	
+	public Member(String memId, String name, Date mDate, String phone,int point) {
+		super();
+		setMemId(memId);
+		setName(name);
+		setmDate(mDate);
+		setPhone(phone);	
+		setPoint(point);
+	}
+	
 	public String getMemId() {
 		return memId;
 	}
 	public void setMemId(String memId) {
-		this.memId = memId;
+		if(memId!=null) {
+			this.memId = memId;
+		}else {
+			System.out.println("memId는 null이 될 수 없습니다");
+		}
 	}
 	public String getName() {
 		return name;
@@ -59,7 +69,6 @@ public class Member {
 		this.point = point;
 	}
 
-
 	@Override
 	public String toString() {
 		return "Member [memId=" + memId + ", name=" + name + ", mDate=" + mDate + ", phone=" + phone + ", point="
@@ -67,4 +76,6 @@ public class Member {
 	}
 	
 	
+	
+
 }
