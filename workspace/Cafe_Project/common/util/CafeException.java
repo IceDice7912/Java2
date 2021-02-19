@@ -1,4 +1,3 @@
-
 package common.util;
 
 public class CafeException extends Exception {

@@ -1,4 +1,3 @@
-
 package client;
 
 import client.ui.CafeUi;
@@ -11,4 +10,5 @@ public class Main {
 		ui.setVisible(true);
 	}
 
+	
 }
