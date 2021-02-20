@@ -16,8 +16,10 @@ public class StudentDAO {
 	public void inserStudent(StudentDTO studentDTO) {
 		
 		try {			
-			con=DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Test","1234");
+			con=DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Test","1234"); //SQL에서 Test 사용자를 새로 만들고 Student 테이블을 새로 만들었습니다.
 			stmt=con.prepareStatement("insert into Student values (?,?,?,?,?)");
+			
+			
 			stmt.setInt(1, studentDTO.getNo());
 			stmt.setString(2, studentDTO.getname());
 			stmt.setString(3, studentDTO.getdet());
