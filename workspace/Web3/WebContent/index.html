@@ -1,22 +1,46 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<meta charset="UTF-8">
+<title>HTML 실습</title>
+	<style>
+		input[type="text"] {
+			background : red;
+		}		
+		input[type="password"] {
+			background : blue;
+		}		
+	</style>
 </head>
 <body>
-	<h3>화원 가입</h3>
-	</br>
-	ID <input type = "text"><br>
-	PW <input type = "password"><br>
-	Name <input type = "text"><br>
-	관심분야 : 자바<input type = "checkbox"> 씨<input type = "checkbox"> 파이썬<input type = "checkbox"><br>
-	성별 : 여<input type="radio" name="gender"> 남<input type="radio" name="gender"><br>
-	등록 클래스 : <select>
-				<option > A반</option>
-				<option > B반</option>
-				<option > C반</option>
-				<option > D반</option>
-				</select>		
+	<form action="HelloServlet">
+			<h1  class = "select">회원가입</h1>
+			<ui>
+				<li class = "select">사과</li>
+				<li>바나나</li>
+				<li>오렌지</li>
+				<li>감</li>
+			</ui>>
+		ID <input type="text" name="id"><br>
+		PW <input type="password" name="pw"><br>
+		NAME <input type="text" name="name"><br>
+		관심분야 : java<input type="checkbox" name="lang" value="java"> 
+		  		c<input type="checkbox" name="lang" value="c"> 
+				python<input type="checkbox" name="lang" value="python"><br>
+		성별 : 여 <input type="radio" name="gender"value="f"> 
+		 	   남 <input type="radio" name="gender" value="m"><br>
+		등록 클래스 : <select name="class">
+					<option value="A">A반</option>
+					<option value="B">B반</option>
+					<option value="C">C반</option>
+					<option value="D">D반</option>
+				  </select>
+		<br>
+		<input type="submit" >
+	</form>
+	
+	<hr>
+	<a href="blog.html">블로그 가기</a>
+	
 </body>
 </html>
