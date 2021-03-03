@@ -28,6 +28,7 @@ public class mainservlet2 extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		String sign=request.getParameter("sign");
 		PrintWriter out=response.getWriter();
+		response.setContentType("text/html; charset=utf-8");
 		
 		if(sign==null) {
 			return ;
@@ -36,27 +37,15 @@ public class mainservlet2 extends HttpServlet {
 			String id=request.getParameter("id");
 			String pw=request.getParameter("pw");
 			out.write(id+":"+pw);
-		}else if(sign.equals("memberInsert")) {
-			System.out.println("맴버 인설트 진입 성공");
+		}else if(sign.equals("memberInsert2")) {
+			System.out.println("맴버 인설트2 진입 성공");
 			String id=request.getParameter("id");
 			String pw=request.getParameter("pw");
 			String name=request.getParameter("name");
-			response.setContentType("text/html;charset=utf-8");
 			String [] all_subject=request.getParameterValues("subject");
 			out.write(id+":"+pw+":"+name+"<br>");
 			for(String s:all_subject) {
 				out.write(s+" &nbsp; ");
-			}
-		}else if(sign.equals("memberInsert2")) {
-			System.out.println("맴버 인설트2 진입 성공");
-			Enumeration totalNames=request.getParameterNames();
-			while(totalNames.hasMoreElements()) {
-				String name=(String)totalNames.nextElement();
-				String []values=request.getParameterValues(name);
-				response.setContentType("text/html;charset=utf-8");
-				for(String value:values) {
-					out.append(name+":"+value+"<br>");
-				}
 			}
 		}
 	}
